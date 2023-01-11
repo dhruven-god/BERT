@@ -45,9 +45,18 @@ text-align: center;
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
+@st.cache
+def load():
+    return BertForQuestionAnswering.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+model = load()
 
-model = BertForQuestionAnswering.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
-token = AutoTokenizer.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+@st.cache
+
+def token_load():
+    return AutoTokenizer.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+
+token = token_load()
+
 bert = pipeline('question-answering',model = model, tokenizer= token)
 
 col1, col2 = st.columns(2)
